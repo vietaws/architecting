@@ -20,6 +20,7 @@ async function loadProducts() {
     const products = await res.json();
     document.getElementById('products-list').innerHTML = products.map(p => `
         <div class="card">
+            ${p.image_url ? `<img src="${p.image_url}" alt="${p.product_name}" style="width:100%;height:200px;object-fit:cover;border-radius:8px 8px 0 0;margin:-16px -16px 12px -16px;">` : ''}
             <h3>${p.product_name}</h3>
             <p>${p.description || ''}</p>
             <div class="price">$${p.price}</div>
@@ -40,18 +41,21 @@ function hideProductForm() {
 }
 
 async function createProduct() {
-    const data = {
-        product_id: document.getElementById('product_id').value,
-        product_name: document.getElementById('product_name').value,
-        description: document.getElementById('description').value,
-        image_url: document.getElementById('image_url').value,
-        price: parseFloat(document.getElementById('price').value),
-        remaining_sku: parseInt(document.getElementById('remaining_sku').value)
-    };
+    const formData = new FormData();
+    formData.append('product_id', document.getElementById('product_id').value);
+    formData.append('product_name', document.getElementById('product_name').value);
+    formData.append('description', document.getElementById('description').value);
+    formData.append('price', document.getElementById('price').value);
+    formData.append('remaining_sku', document.getElementById('remaining_sku').value);
+    
+    const imageFile = document.getElementById('image_file').files[0];
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
+
     await fetch(`${API_URL}/products`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: formData
     });
     hideProductForm();
     loadProducts();
