@@ -163,16 +163,15 @@ loadInstanceId();
 
 // Stress Test
 let stressInterval = null;
-const instancesMap = new Map();
 
-async function startStress(instanceId) {
+async function startStress() {
     try {
         const res = await fetch(`${API_URL}/stress/start`, { method: 'POST' });
         const data = await res.json();
         console.log('Stress test started:', data);
         
         if (!stressInterval) {
-            stressInterval = setInterval(loadAllInstances, 5000);
+            stressInterval = setInterval(loadAllInstances, 3000);
         }
         loadAllInstances();
     } catch (error) {
@@ -181,7 +180,7 @@ async function startStress(instanceId) {
     }
 }
 
-async function stopStress(instanceId) {
+async function stopStress() {
     try {
         const res = await fetch(`${API_URL}/stress/stop`, { method: 'POST' });
         const data = await res.json();
@@ -195,82 +194,38 @@ async function stopStress(instanceId) {
 
 async function loadAllInstances() {
     try {
-        // Get list of instances with tag project=miracle
-        const discoveryRes = await fetch(`${API_URL}/stress/instances`);
-        const discoveryData = await discoveryRes.json();
+        // Get current instance status only
+        const res = await fetch(`${API_URL}/stress/status`);
+        const data = await res.json();
         
-        if (!discoveryData.instances || discoveryData.instances.length === 0) {
-            const tbody = document.getElementById('instances-tbody');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No instances found with tag project=miracle</td></tr>';
-            return;
-        }
-        
-        // Fetch status for each discovered instance
-        const statusPromises = discoveryData.instances.map(async (instance) => {
-            try {
-                const res = await fetch(`${API_URL}/stress/status`);
-                const data = await res.json();
-                // Only include if instance ID matches
-                if (data.instanceId === instance.instanceId) {
-                    return data;
-                }
-                return null;
-            } catch (error) {
-                return null;
-            }
-        });
-        
-        const statuses = await Promise.all(statusPromises);
-        
-        // Collect valid instances
-        instancesMap.clear();
-        statuses.forEach(data => {
-            if (data && data.instanceId) {
-                instancesMap.set(data.instanceId, data);
-            }
-        });
-        
-        // If no status data yet, show discovered instances with default values
-        if (instancesMap.size === 0) {
-            discoveryData.instances.forEach(instance => {
-                instancesMap.set(instance.instanceId, {
-                    instanceId: instance.instanceId,
-                    running: false,
-                    workers: 0,
-                    cpu: 0,
-                    cores: '-'
-                });
-            });
-        }
-        
-        // Render table
+        // Render table with single row
         const tbody = document.getElementById('instances-tbody');
-        tbody.innerHTML = Array.from(instancesMap.values()).map(instance => `
+        tbody.innerHTML = `
             <tr>
-                <td data-label="Instance ID">${instance.instanceId}</td>
-                <td data-label="Status" class="${instance.running ? 'status-running' : 'status-stopped'}">
-                    ${instance.running ? 'Running' : 'Stopped'}
+                <td data-label="Instance ID">${data.instanceId}</td>
+                <td data-label="Status" class="${data.running ? 'status-running' : 'status-stopped'}">
+                    ${data.running ? 'Running' : 'Stopped'}
                 </td>
-                <td data-label="Workers">${instance.workers}</td>
-                <td data-label="CPU Usage">${typeof instance.cpu === 'number' ? instance.cpu.toFixed(1) : instance.cpu}%</td>
-                <td data-label="CPU Cores">${instance.cores}</td>
+                <td data-label="Workers">${data.workers}</td>
+                <td data-label="CPU Usage">${data.cpu.toFixed(1)}%</td>
+                <td data-label="CPU Cores">${data.cores}</td>
                 <td data-label="Actions" class="actions">
-                    <button class="btn-small btn-start" onclick="startStress('${instance.instanceId}')">Start</button>
-                    <button class="btn-small btn-stop" onclick="stopStress('${instance.instanceId}')">Stop</button>
+                    <button class="btn-small btn-start" onclick="startStress()">Start</button>
+                    <button class="btn-small btn-stop" onclick="stopStress()">Stop</button>
                 </td>
             </tr>
-        `).join('');
+        `;
     } catch (error) {
-        console.error('Error loading instances:', error);
+        console.error('Error loading instance:', error);
         const tbody = document.getElementById('instances-tbody');
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Error loading instances</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Error loading instance</td></tr>';
     }
 }
 
 async function loadStressStatus() {
     loadAllInstances();
     if (!stressInterval) {
-        stressInterval = setInterval(loadAllInstances, 5000);
+        stressInterval = setInterval(loadAllInstances, 3000);
     }
 }
 
