@@ -207,6 +207,7 @@ async function loadStressStatus() {
         document.getElementById('stress-workers').textContent = data.workers;
         document.getElementById('stress-cpu').textContent = `${data.cpu.toFixed(1)}%`;
         document.getElementById('stress-cores').textContent = data.cores;
+        document.getElementById('stress-instance').textContent = data.instanceId;
     } catch (error) {
         console.error('Error loading stress status:', error);
     }
