@@ -7,9 +7,6 @@ dnf update -y
 # Install Node.js 22
 dnf install -y nodejs22 git postgresql17
 
-# Install PM2 globally
-npm install -g pm2
-
 # Set environment variables
 export AWS_REGION="us-east-1"
 export DYNAMODB_TABLE="demo_table"
@@ -27,12 +24,12 @@ git clone https://github.com/vietaws/architecting.git
 cd architecting
 
 # Run the SQL script
-psql -h $RDS_HOST -U $RDS_USER -d $RDS_DATABASE -f setup.sql
+psql -h $RDS_HOST -U $RDS_USER -d $RDS_DATABASE -f setup.sql || true
 
 # Unset password
 unset PGPASSWORD
 
-# Create config file from environment variables
+# Create config file
 cat > app_config.json <<EOF
 {
   "dynamodb": {
@@ -59,16 +56,37 @@ EOF
 # Install dependencies
 npm install
 
-# Set ownership before starting PM2
+# Set ownership
 chown -R ec2-user:ec2-user /home/ec2-user/architecting
 
-# Start application with PM2 as ec2-user
-sudo -u ec2-user bash << 'EOSU'
-cd /home/ec2-user/architecting
-pm2 start server.js --name product-app
-pm2 save
-pm2 startup systemd -u ec2-user --hp /home/ec2-user
-EOSU
+# Create systemd service
+cat > /etc/systemd/system/product-app.service <<'EOFS'
+[Unit]
+Description=Product Provider Application
+After=network.target
 
-# Enable PM2 startup
-env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u ec2-user --hp /home/ec2-user
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/architecting
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=product-app
+
+[Install]
+WantedBy=multi-user.target
+EOFS
+
+# Enable and start service
+systemctl daemon-reload
+systemctl enable product-app
+systemctl start product-app
+
+# Wait for app to start
+sleep 5
+
+# Check status
+systemctl status product-app --no-pager

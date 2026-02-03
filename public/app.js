@@ -146,3 +146,16 @@ async function deleteProvider(id) {
 
 // Initial load
 loadProducts();
+
+// Load instance ID
+async function loadInstanceId() {
+    try {
+        const res = await fetch(`${API_URL}/instance-id`);
+        const data = await res.json();
+        document.getElementById('instance-id').textContent = `Instance: ${data.instanceId}`;
+    } catch (error) {
+        document.getElementById('instance-id').textContent = 'Instance: unknown';
+    }
+}
+
+loadInstanceId();
