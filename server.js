@@ -34,7 +34,7 @@ app.get('/instance-id', async (req, res) => {
       req.end();
      });
     // const instanceId = await response.text();
-    const instanceId = new Promise((resolve, reject) => {
+    const instanceId = await new Promise((resolve, reject) => {
       http.get({
         host: '169.254.169.254',
         path: '/latest/meta-data/instance-id',
