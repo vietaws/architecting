@@ -242,8 +242,8 @@ nav {
     border-radius: 12px;
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
 }
 
 .status-item {
@@ -254,11 +254,12 @@ nav {
 
 .status-item .label {
     color: #666;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .status-item .value {
     color: #333;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
+    word-break: break-all;
 }
