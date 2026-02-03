@@ -3,9 +3,9 @@ set -e
 export AWS_REGION="us-east-1"
 export DYNAMODB_TABLE="demo_table"
 export S3_BUCKET="demo-product-images-123456"
-export RDS_HOST="database-1.cluster-crkedvynyebh.us-east-1.rds.amazonaws.com"
+export RDS_HOST="database-2.cluster-crkedvynyebh.us-east-1.rds.amazonaws.com"
 export RDS_PORT="5432"
-export RDS_DATABASE="products_db"
+export RDS_DATABASE="providers_db"
 export RDS_USER="dbadmin"
 export RDS_PASSWORD="YourPassword"
 export PGPASSWORD=$RDS_PASSWORD
@@ -13,8 +13,7 @@ export PGPASSWORD=$RDS_PASSWORD
 # Update system
 yum update -y
 
-# Install Node.js 18
-curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+# Install Node.js 22
 yum install -y nodejs git
 yum install -y postgresql17
 
@@ -27,7 +26,7 @@ git clone https://github.com/vietaws/architecting.git
 cd architecting
 
 # Run the SQL script
-psql -h $RDS_HOST -U $RDS_USER -d products_db -f setup.sql
+psql -h $RDS_HOST -U $RDS_USER -d $RDS_DATABASE -f setup.sql
 
 # Unset password
 unset PGPASSWORD
@@ -70,3 +69,4 @@ chown -R ec2-user:ec2-user /home/ec2-user/architecting
 
 # check logs
 # pm2 logs product-app --lines 50
+# curl http://localhost:3000/health
