@@ -14,6 +14,7 @@
             <nav>
                 <button class="tab active" data-tab="products">Products</button>
                 <button class="tab" data-tab="providers">Providers</button>
+                <button class="tab" data-tab="stress">Stress Test</button>
             </nav>
         </header>
 
@@ -56,6 +57,34 @@
             </div>
 
             <div id="providers-list" class="list"></div>
+        </main>
+
+        <main id="stress" class="tab-content">
+            <div class="stress-container">
+                <h2>CPU Stress Test</h2>
+                <div class="stress-controls">
+                    <button class="btn-primary" onclick="startStress()">Start Stress Test</button>
+                    <button class="btn-secondary" onclick="stopStress()">Stop Stress Test</button>
+                </div>
+                <div class="stress-status">
+                    <div class="status-item">
+                        <span class="label">Status:</span>
+                        <span id="stress-status" class="value">Stopped</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Workers:</span>
+                        <span id="stress-workers" class="value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">CPU Usage:</span>
+                        <span id="stress-cpu" class="value">0%</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">CPU Cores:</span>
+                        <span id="stress-cores" class="value">-</span>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 

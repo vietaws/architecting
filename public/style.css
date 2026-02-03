@@ -221,3 +221,44 @@ nav {
 .hidden {
     display: none;
 }
+
+.stress-container {
+    padding: 30px;
+}
+
+.stress-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.stress-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.stress-status {
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.status-item .label {
+    color: #666;
+    font-size: 14px;
+}
+
+.status-item .value {
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+}

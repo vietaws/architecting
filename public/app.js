@@ -10,7 +10,8 @@ document.querySelectorAll('.tab').forEach(tab => {
         document.getElementById(target).classList.add('active');
         
         if (target === 'products') loadProducts();
-        else loadProviders();
+        else if (target === 'providers') loadProviders();
+        else if (target === 'stress') loadStressStatus();
     });
 });
 
@@ -159,3 +160,55 @@ async function loadInstanceId() {
 }
 
 loadInstanceId();
+
+// Stress Test
+let stressInterval = null;
+
+async function startStress() {
+    try {
+        const res = await fetch(`${API_URL}/stress/start`, { method: 'POST' });
+        const data = await res.json();
+        console.log('Stress test started:', data);
+        
+        if (!stressInterval) {
+            stressInterval = setInterval(loadStressStatus, 1000);
+        }
+    } catch (error) {
+        console.error('Error starting stress test:', error);
+        alert('Failed to start stress test');
+    }
+}
+
+async function stopStress() {
+    try {
+        const res = await fetch(`${API_URL}/stress/stop`, { method: 'POST' });
+        const data = await res.json();
+        console.log('Stress test stopped:', data);
+        
+        if (stressInterval) {
+            clearInterval(stressInterval);
+            stressInterval = null;
+        }
+        
+        loadStressStatus();
+    } catch (error) {
+        console.error('Error stopping stress test:', error);
+        alert('Failed to stop stress test');
+    }
+}
+
+async function loadStressStatus() {
+    try {
+        const res = await fetch(`${API_URL}/stress/status`);
+        const data = await res.json();
+        
+        document.getElementById('stress-status').textContent = data.running ? 'Running' : 'Stopped';
+        document.getElementById('stress-status').style.color = data.running ? '#4caf50' : '#f44336';
+        document.getElementById('stress-workers').textContent = data.workers;
+        document.getElementById('stress-cpu').textContent = `${data.cpu.toFixed(1)}%`;
+        document.getElementById('stress-cores').textContent = data.cores;
+    } catch (error) {
+        console.error('Error loading stress status:', error);
+    }
+}
+
