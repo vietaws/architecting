@@ -3,8 +3,7 @@ const path = require('path');
 const config = require('./app_config.json');
 const productRoutes = require('./routes/products');
 const providerRoutes = require('./routes/providers');
-const fetch = require('node-fetch');
-
+const http = require('http');
 
 const app = express();
 app.use(express.json());
