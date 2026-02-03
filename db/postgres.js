@@ -1,7 +1,12 @@
 const { Pool } = require('pg');
 const config = require('../app_config.json');
 
-const pool = new Pool(config.rds);
+const pool = new Pool({
+  ...config.rds,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
 pool.on('error', (err) => {
   console.error('PostgreSQL pool error:', err);
