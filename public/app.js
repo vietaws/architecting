@@ -171,7 +171,7 @@ async function startStress() {
         console.log('Stress test started:', data);
         
         if (!stressInterval) {
-            stressInterval = setInterval(loadStressStatus, 1000);
+            stressInterval = setInterval(loadStressStatus, 5000);
         }
     } catch (error) {
         console.error('Error starting stress test:', error);
