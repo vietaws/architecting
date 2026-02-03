@@ -195,25 +195,56 @@ async function stopStress(instanceId) {
 
 async function loadAllInstances() {
     try {
-        // Make multiple requests to potentially hit different instances
-        const requests = Array(10).fill(null).map(() => 
-            fetch(`${API_URL}/stress/status`).then(r => r.json())
-        );
+        // Get list of instances with tag project=miracle
+        const discoveryRes = await fetch(`${API_URL}/stress/instances`);
+        const discoveryData = await discoveryRes.json();
         
-        const results = await Promise.all(requests);
-        
-        // Collect unique instances
-        results.forEach(data => {
-            instancesMap.set(data.instanceId, data);
-        });
-        
-        // Render table
-        const tbody = document.getElementById('instances-tbody');
-        if (instancesMap.size === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No instances found</td></tr>';
+        if (!discoveryData.instances || discoveryData.instances.length === 0) {
+            const tbody = document.getElementById('instances-tbody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No instances found with tag project=miracle</td></tr>';
             return;
         }
         
+        // Fetch status for each discovered instance
+        const statusPromises = discoveryData.instances.map(async (instance) => {
+            try {
+                const res = await fetch(`${API_URL}/stress/status`);
+                const data = await res.json();
+                // Only include if instance ID matches
+                if (data.instanceId === instance.instanceId) {
+                    return data;
+                }
+                return null;
+            } catch (error) {
+                return null;
+            }
+        });
+        
+        const statuses = await Promise.all(statusPromises);
+        
+        // Collect valid instances
+        instancesMap.clear();
+        statuses.forEach(data => {
+            if (data && data.instanceId) {
+                instancesMap.set(data.instanceId, data);
+            }
+        });
+        
+        // If no status data yet, show discovered instances with default values
+        if (instancesMap.size === 0) {
+            discoveryData.instances.forEach(instance => {
+                instancesMap.set(instance.instanceId, {
+                    instanceId: instance.instanceId,
+                    running: false,
+                    workers: 0,
+                    cpu: 0,
+                    cores: '-'
+                });
+            });
+        }
+        
+        // Render table
+        const tbody = document.getElementById('instances-tbody');
         tbody.innerHTML = Array.from(instancesMap.values()).map(instance => `
             <tr>
                 <td>${instance.instanceId}</td>
@@ -221,7 +252,7 @@ async function loadAllInstances() {
                     ${instance.running ? 'Running' : 'Stopped'}
                 </td>
                 <td>${instance.workers}</td>
-                <td>${instance.cpu.toFixed(1)}%</td>
+                <td>${typeof instance.cpu === 'number' ? instance.cpu.toFixed(1) : instance.cpu}%</td>
                 <td>${instance.cores}</td>
                 <td class="actions">
                     <button class="btn-small btn-start" onclick="startStress('${instance.instanceId}')">Start</button>
@@ -231,6 +262,8 @@ async function loadAllInstances() {
         `).join('');
     } catch (error) {
         console.error('Error loading instances:', error);
+        const tbody = document.getElementById('instances-tbody');
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Error loading instances</td></tr>';
     }
 }
 

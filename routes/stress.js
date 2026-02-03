@@ -2,11 +2,14 @@ const express = require('express');
 const { Worker } = require('worker_threads');
 const os = require('os');
 const http = require('http');
+const { EC2Client, DescribeInstancesCommand } = require('@aws-sdk/client-ec2');
 const router = express.Router();
 
 let workers = [];
 let cpuUsage = { user: 0, system: 0 };
 let cachedInstanceId = null;
+
+const ec2Client = new EC2Client({ region: process.env.AWS_REGION || 'us-east-1' });
 
 // Get instance ID from metadata service
 async function getInstanceId() {
@@ -109,6 +112,43 @@ router.get('/status', async (req, res) => {
     cores: cpu.cores,
     instanceId: instanceId
   });
+});
+
+// Discover instances with tag project=miracle
+router.get('/instances', async (req, res) => {
+  try {
+    const command = new DescribeInstancesCommand({
+      Filters: [
+        {
+          Name: 'tag:project',
+          Values: ['miracle']
+        },
+        {
+          Name: 'instance-state-name',
+          Values: ['running']
+        }
+      ]
+    });
+
+    const response = await ec2Client.send(command);
+    const instances = [];
+
+    response.Reservations?.forEach(reservation => {
+      reservation.Instances?.forEach(instance => {
+        instances.push({
+          instanceId: instance.InstanceId,
+          privateIp: instance.PrivateIpAddress,
+          publicIp: instance.PublicIpAddress,
+          state: instance.State.Name
+        });
+      });
+    });
+
+    res.json({ instances });
+  } catch (error) {
+    console.error('Error discovering instances:', error);
+    res.status(500).json({ error: error.message, instances: [] });
+  }
 });
 
 module.exports = router;
