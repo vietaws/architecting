@@ -10,6 +10,10 @@ router.post('/', upload.single('image'), async (req, res) => {
   try {
     const { product_id, product_name, description, price, remaining_sku } = req.body;
     
+    if (!product_id || !product_name) {
+      return res.status(400).json({ error: 'product_id and product_name are required' });
+    }
+
     let image_key = '';
     if (req.file) {
       image_key = await uploadImage(req.file, product_id);
@@ -17,12 +21,20 @@ router.post('/', upload.single('image'), async (req, res) => {
 
     await docClient.send(new PutCommand({
       TableName: tableName,
-      Item: { product_id, product_name, description, image_key, price: parseFloat(price), remaining_sku: parseInt(remaining_sku) }
+      Item: { 
+        product_id, 
+        product_name, 
+        description: description || '', 
+        image_key, 
+        price: price ? parseFloat(price) : 0, 
+        remaining_sku: remaining_sku ? parseInt(remaining_sku) : 0 
+      }
     }));
     
-    const image_url = await getImageUrl(image_key);
+    const image_url = image_key ? await getImageUrl(image_key) : '';
     res.json({ message: 'Product created', product_id, image_url });
   } catch (error) {
+    console.error('Product creation error:', error);
     res.status(500).json({ error: error.message });
   }
 });
