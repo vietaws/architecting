@@ -312,3 +312,164 @@ nav {
 .stress-table .btn-small:hover {
     opacity: 0.8;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        border-radius: 8px;
+    }
+
+    header {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    #instance-id {
+        font-size: 12px !important;
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    nav {
+        margin-top: 10px;
+        gap: 5px;
+    }
+
+    .tab {
+        padding: 8px 12px;
+        font-size: 13px;
+        flex: 1;
+        text-align: center;
+    }
+
+    main {
+        padding: 15px !important;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 10px !important;
+    }
+
+    .btn-primary, .btn-secondary, .btn-delete {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .form-card {
+        padding: 15px;
+    }
+
+    .form-card input,
+    .form-card textarea {
+        font-size: 16px;
+    }
+
+    .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .list-item .btn-delete {
+        width: 100%;
+    }
+
+    /* Stress Test Table Mobile */
+    .stress-container {
+        padding: 15px;
+    }
+
+    .stress-container h2 {
+        font-size: 18px;
+    }
+
+    .stress-info {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .stress-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .stress-table thead {
+        display: none;
+    }
+
+    .stress-table tbody {
+        display: block;
+    }
+
+    .stress-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px;
+        background: white;
+    }
+
+    .stress-table td {
+        display: block;
+        padding: 8px 0;
+        border: none;
+        text-align: left;
+    }
+
+    .stress-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #666;
+        display: inline-block;
+        width: 100px;
+        font-size: 12px;
+    }
+
+    .stress-table .actions {
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .stress-table .btn-small {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    .tab {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .card h3, .list-item h3 {
+        font-size: 16px;
+    }
+
+    .price {
+        font-size: 20px;
+    }
+}

@@ -247,14 +247,14 @@ async function loadAllInstances() {
         const tbody = document.getElementById('instances-tbody');
         tbody.innerHTML = Array.from(instancesMap.values()).map(instance => `
             <tr>
-                <td>${instance.instanceId}</td>
-                <td class="${instance.running ? 'status-running' : 'status-stopped'}">
+                <td data-label="Instance ID">${instance.instanceId}</td>
+                <td data-label="Status" class="${instance.running ? 'status-running' : 'status-stopped'}">
                     ${instance.running ? 'Running' : 'Stopped'}
                 </td>
-                <td>${instance.workers}</td>
-                <td>${typeof instance.cpu === 'number' ? instance.cpu.toFixed(1) : instance.cpu}%</td>
-                <td>${instance.cores}</td>
-                <td class="actions">
+                <td data-label="Workers">${instance.workers}</td>
+                <td data-label="CPU Usage">${typeof instance.cpu === 'number' ? instance.cpu.toFixed(1) : instance.cpu}%</td>
+                <td data-label="CPU Cores">${instance.cores}</td>
+                <td data-label="Actions" class="actions">
                     <button class="btn-small btn-start" onclick="startStress('${instance.instanceId}')">Start</button>
                     <button class="btn-small btn-stop" onclick="stopStress('${instance.instanceId}')">Stop</button>
                 </td>
