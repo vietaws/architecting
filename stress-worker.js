@@ -3,8 +3,12 @@ const { parentPort } = require('worker_threads');
 // CPU-intensive task
 function stress() {
   const start = Date.now();
-  while (Date.now() - start < 100) {
-    Math.sqrt(Math.random());
+  while (Date.now() - start < 1000) {
+    for (let i = 0; i < 1000000; i++) {
+      Math.sqrt(Math.random() * Math.random());
+      Math.pow(Math.random(), Math.random());
+      Math.sin(Math.random()) * Math.cos(Math.random());
+    }
   }
 }
 
