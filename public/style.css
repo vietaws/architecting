@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+.tab {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.tab:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.tab.active {
+    background: white;
+    color: #667eea;
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.actions {
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.form-card {
+    background: #f9fafb;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.form-card.hidden {
+    display: none;
+}
+
+.form-card h3 {
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.form-card input, .form-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-card textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+}
+
+.card h3 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.card .price {
+    color: #667eea;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.list-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.list-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.list-item h3 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.list-item p {
+    color: #666;
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
+}

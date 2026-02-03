@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product & Provider Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Product & Provider Management</h1>
+            <nav>
+                <button class="tab active" data-tab="products">Products</button>
+                <button class="tab" data-tab="providers">Providers</button>
+            </nav>
+        </header>
+
+        <main id="products" class="tab-content active">
+            <div class="actions">
+                <button class="btn-primary" onclick="showProductForm()">+ Add Product</button>
+            </div>
+            
+            <div id="product-form" class="form-card hidden">
+                <h3>Add Product</h3>
+                <input type="text" id="product_id" placeholder="Product ID" required>
+                <input type="text" id="product_name" placeholder="Product Name" required>
+                <textarea id="description" placeholder="Description"></textarea>
+                <input type="text" id="image_url" placeholder="Image URL">
+                <input type="number" id="price" placeholder="Price" step="0.01">
+                <input type="number" id="remaining_sku" placeholder="Stock Quantity">
+                <div class="form-actions">
+                    <button class="btn-primary" onclick="createProduct()">Save</button>
+                    <button class="btn-secondary" onclick="hideProductForm()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="products-list" class="grid"></div>
+        </main>
+
+        <main id="providers" class="tab-content">
+            <div class="actions">
+                <button class="btn-primary" onclick="showProviderForm()">+ Add Provider</button>
+            </div>
+            
+            <div id="provider-form" class="form-card hidden">
+                <h3>Add Provider</h3>
+                <input type="text" id="provider_id" placeholder="Provider ID" required>
+                <input type="text" id="provider_name" placeholder="Provider Name" required>
+                <input type="text" id="provider_city" placeholder="City">
+                <div class="form-actions">
+                    <button class="btn-primary" onclick="createProvider()">Save</button>
+                    <button class="btn-secondary" onclick="hideProviderForm()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="providers-list" class="list"></div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
