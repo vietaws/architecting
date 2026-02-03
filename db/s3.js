@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const config = require('../app_config.json');
 
@@ -36,4 +36,16 @@ async function getImageUrl(key) {
   }
 }
 
-module.exports = { uploadImage, getImageUrl };
+async function deleteImage(key) {
+  try {
+    if (!key) return;
+    await s3Client.send(new DeleteObjectCommand({
+      Bucket: config.s3.bucketName,
+      Key: key
+    }));
+  } catch (error) {
+    console.error('S3 delete error:', error);
+  }
+}
+
+module.exports = { uploadImage, getImageUrl, deleteImage };
