@@ -4,7 +4,6 @@ const config = require('./app_config.json');
 const productRoutes = require('./routes/products');
 const providerRoutes = require('./routes/providers');
 const fetch = require('node-fetch');
-const { MetadataService } = require('@aws-sdk/ec2-metadata-service');
 
 
 const app = express();
@@ -21,12 +20,32 @@ app.get('/health', (req, res) => {
 
 app.get('/instance-id', async (req, res) => {
   try {
-    // const response = await fetch('http://169.254.169.254/latest/meta-data/instance-id', {
-    //   timeout: 2000
-    // });
-    const metadata = new MetadataService();
+    const token = await new Promise((resolve, reject) => {
+    const req = http.request({
+        host: '169.254.169.254',
+        path: '/latest/api/token',
+        method: 'PUT',
+        headers: { 'X-aws-ec2-metadata-token-ttl-seconds': '21600' }
+      }, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => resolve(data));
+      });
+      req.on('error', reject);
+      req.end();
+     });
     // const instanceId = await response.text();
-    const instanceId = await metadata.request('/latest/meta-data/instance-id');
+    const instanceId = new Promise((resolve, reject) => {
+      http.get({
+        host: '169.254.169.254',
+        path: '/latest/meta-data/instance-id',
+        headers: { 'X-aws-ec2-metadata-token': token }
+      }, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => resolve(data));
+      }).on('error', reject);
+    });
     res.json({ instanceId });
   } catch (error) {
     res.json({ instanceId: 'local-dev' });
