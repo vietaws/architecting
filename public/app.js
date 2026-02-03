@@ -70,18 +70,30 @@ async function deleteProduct(id) {
 
 // Providers
 async function loadProviders() {
-    const res = await fetch(`${API_URL}/providers`);
-    const providers = await res.json();
-    document.getElementById('providers-list').innerHTML = providers.map(p => `
-        <div class="list-item">
-            <div>
-                <h3>${p.provider_name}</h3>
-                <p>${p.provider_city || ''}</p>
-                <p style="font-size:12px;color:#999;">ID: ${p.provider_id}</p>
+    try {
+        const res = await fetch(`${API_URL}/providers`);
+        const providers = await res.json();
+        console.log('Providers loaded:', providers);
+        
+        if (!Array.isArray(providers)) {
+            console.error('Providers response is not an array:', providers);
+            return;
+        }
+        
+        document.getElementById('providers-list').innerHTML = providers.map(p => `
+            <div class="list-item">
+                <div>
+                    <h3>${p.provider_name}</h3>
+                    <p>${p.provider_city || ''}</p>
+                    <p style="font-size:12px;color:#999;">ID: ${p.provider_id}</p>
+                </div>
+                <button class="btn-delete" onclick="deleteProvider('${p.provider_id}')">Delete</button>
             </div>
-            <button class="btn-delete" onclick="deleteProvider('${p.provider_id}')">Delete</button>
-        </div>
-    `).join('');
+        `).join('');
+    } catch (error) {
+        console.error('Error loading providers:', error);
+        document.getElementById('providers-list').innerHTML = '<p style="color:red;">Error loading providers</p>';
+    }
 }
 
 function showProviderForm() {
@@ -94,18 +106,35 @@ function hideProviderForm() {
 }
 
 async function createProvider() {
-    const data = {
-        provider_id: document.getElementById('provider_id').value,
-        provider_name: document.getElementById('provider_name').value,
-        provider_city: document.getElementById('provider_city').value
-    };
-    await fetch(`${API_URL}/providers`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    });
-    hideProviderForm();
-    loadProviders();
+    try {
+        const data = {
+            provider_id: document.getElementById('provider_id').value,
+            provider_name: document.getElementById('provider_name').value,
+            provider_city: document.getElementById('provider_city').value
+        };
+        
+        console.log('Creating provider:', data);
+        
+        const res = await fetch(`${API_URL}/providers`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        
+        const result = await res.json();
+        console.log('Provider creation result:', result);
+        
+        if (!res.ok) {
+            alert(`Error: ${result.error || 'Failed to create provider'}`);
+            return;
+        }
+        
+        hideProviderForm();
+        loadProviders();
+    } catch (error) {
+        console.error('Error creating provider:', error);
+        alert('Failed to create provider');
+    }
 }
 
 async function deleteProvider(id) {

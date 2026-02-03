@@ -3,11 +3,12 @@ set -e
 export AWS_REGION="us-east-1"
 export DYNAMODB_TABLE="demo_table"
 export S3_BUCKET="demo-product-images-123456"
-export RDS_HOST="your-db.rds.amazonaws.com"
+export RDS_HOST="database-1.cluster-crkedvynyebh.us-east-1.rds.amazonaws.com"
 export RDS_PORT="5432"
 export RDS_DATABASE="products_db"
-export RDS_USER="admin"
+export RDS_USER="dbadmin"
 export RDS_PASSWORD="YourPassword"
+export PGPASSWORD=$RDS_PASSWORD
 
 # Update system
 yum update -y
@@ -15,6 +16,7 @@ yum update -y
 # Install Node.js 18
 curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
 yum install -y nodejs git
+yum install -y postgresql17
 
 # Install PM2 globally
 npm install -g pm2
@@ -23,6 +25,12 @@ npm install -g pm2
 cd /home/ec2-user
 git clone https://github.com/vietaws/architecting.git
 cd architecting
+
+# Run the SQL script
+psql -h $RDS_HOST -U $RDS_USER -d products_db -f setup.sql
+
+# Unset password
+unset PGPASSWORD
 
 # Create config file from environment variables
 cat > app_config.json <<EOF
@@ -59,3 +67,6 @@ pm2 save
 
 # Set ownership
 chown -R ec2-user:ec2-user /home/ec2-user/architecting
+
+# check logs
+# pm2 logs product-app --lines 50

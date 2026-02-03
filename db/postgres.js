@@ -3,4 +3,12 @@ const config = require('../app_config.json');
 
 const pool = new Pool(config.rds);
 
+pool.on('error', (err) => {
+  console.error('PostgreSQL pool error:', err);
+});
+
+pool.on('connect', () => {
+  console.log('Connected to PostgreSQL');
+});
+
 module.exports = pool;
