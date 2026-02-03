@@ -163,53 +163,81 @@ loadInstanceId();
 
 // Stress Test
 let stressInterval = null;
+const instancesMap = new Map();
 
-async function startStress() {
+async function startStress(instanceId) {
     try {
         const res = await fetch(`${API_URL}/stress/start`, { method: 'POST' });
         const data = await res.json();
         console.log('Stress test started:', data);
         
         if (!stressInterval) {
-            stressInterval = setInterval(loadStressStatus, 5000);
+            stressInterval = setInterval(loadAllInstances, 5000);
         }
+        loadAllInstances();
     } catch (error) {
         console.error('Error starting stress test:', error);
         alert('Failed to start stress test');
     }
 }
 
-async function stopStress() {
+async function stopStress(instanceId) {
     try {
         const res = await fetch(`${API_URL}/stress/stop`, { method: 'POST' });
         const data = await res.json();
         console.log('Stress test stopped:', data);
-        
-        if (stressInterval) {
-            clearInterval(stressInterval);
-            stressInterval = null;
-        }
-        
-        loadStressStatus();
+        loadAllInstances();
     } catch (error) {
         console.error('Error stopping stress test:', error);
         alert('Failed to stop stress test');
     }
 }
 
-async function loadStressStatus() {
+async function loadAllInstances() {
     try {
-        const res = await fetch(`${API_URL}/stress/status`);
-        const data = await res.json();
+        // Make multiple requests to potentially hit different instances
+        const requests = Array(10).fill(null).map(() => 
+            fetch(`${API_URL}/stress/status`).then(r => r.json())
+        );
         
-        document.getElementById('stress-status').textContent = data.running ? 'Running' : 'Stopped';
-        document.getElementById('stress-status').style.color = data.running ? '#4caf50' : '#f44336';
-        document.getElementById('stress-workers').textContent = data.workers;
-        document.getElementById('stress-cpu').textContent = `${data.cpu.toFixed(1)}%`;
-        document.getElementById('stress-cores').textContent = data.cores;
-        document.getElementById('stress-instance').textContent = data.instanceId;
+        const results = await Promise.all(requests);
+        
+        // Collect unique instances
+        results.forEach(data => {
+            instancesMap.set(data.instanceId, data);
+        });
+        
+        // Render table
+        const tbody = document.getElementById('instances-tbody');
+        if (instancesMap.size === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No instances found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = Array.from(instancesMap.values()).map(instance => `
+            <tr>
+                <td>${instance.instanceId}</td>
+                <td class="${instance.running ? 'status-running' : 'status-stopped'}">
+                    ${instance.running ? 'Running' : 'Stopped'}
+                </td>
+                <td>${instance.workers}</td>
+                <td>${instance.cpu.toFixed(1)}%</td>
+                <td>${instance.cores}</td>
+                <td class="actions">
+                    <button class="btn-small btn-start" onclick="startStress('${instance.instanceId}')">Start</button>
+                    <button class="btn-small btn-stop" onclick="stopStress('${instance.instanceId}')">Stop</button>
+                </td>
+            </tr>
+        `).join('');
     } catch (error) {
-        console.error('Error loading stress status:', error);
+        console.error('Error loading instances:', error);
+    }
+}
+
+async function loadStressStatus() {
+    loadAllInstances();
+    if (!stressInterval) {
+        stressInterval = setInterval(loadAllInstances, 5000);
     }
 }
 

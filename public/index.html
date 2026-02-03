@@ -61,32 +61,28 @@
 
         <main id="stress" class="tab-content">
             <div class="stress-container">
-                <h2>CPU Stress Test</h2>
-                <div class="stress-controls">
-                    <button class="btn-primary" onclick="startStress()">Start Stress Test</button>
-                    <button class="btn-secondary" onclick="stopStress()">Stop Stress Test</button>
+                <h2>CPU Stress Test - Multi-Instance Control</h2>
+                <div class="stress-info">
+                    <p>Control stress tests across all instances behind the load balancer. Each request may hit a different instance.</p>
                 </div>
-                <div class="stress-status">
-                    <div class="status-item">
-                        <span class="label">Status:</span>
-                        <span id="stress-status" class="value">Stopped</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="label">Workers:</span>
-                        <span id="stress-workers" class="value">0</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="label">CPU Usage:</span>
-                        <span id="stress-cpu" class="value">0%</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="label">CPU Cores:</span>
-                        <span id="stress-cores" class="value">-</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="label">Instance ID:</span>
-                        <span id="stress-instance" class="value">-</span>
-                    </div>
+                <div id="instances-table">
+                    <table class="stress-table">
+                        <thead>
+                            <tr>
+                                <th>Instance ID</th>
+                                <th>Status</th>
+                                <th>Workers</th>
+                                <th>CPU Usage</th>
+                                <th>CPU Cores</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instances-tbody">
+                            <tr>
+                                <td colspan="6" style="text-align:center;">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>

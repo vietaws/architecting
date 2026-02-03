@@ -228,38 +228,87 @@ nav {
 
 .stress-container h2 {
     color: #333;
+    margin-bottom: 10px;
+}
+
+.stress-info {
+    background: #e3f2fd;
+    padding: 12px;
+    border-radius: 8px;
     margin-bottom: 20px;
+    color: #1976d2;
+    font-size: 14px;
 }
 
-.stress-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+.stress-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.stress-status {
-    background: #f5f5f5;
-    border-radius: 12px;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
+.stress-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
 }
 
-.status-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.status-item .label {
-    color: #666;
-    font-size: 12px;
-}
-
-.status-item .value {
-    color: #333;
-    font-size: 18px;
+.stress-table th {
+    padding: 15px;
+    text-align: left;
     font-weight: 600;
-    word-break: break-all;
+    font-size: 14px;
+}
+
+.stress-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+.stress-table tbody tr:hover {
+    background: #f5f5f5;
+}
+
+.stress-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.stress-table .status-running {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.stress-table .status-stopped {
+    color: #f44336;
+    font-weight: 600;
+}
+
+.stress-table .actions {
+    display: flex;
+    gap: 8px;
+}
+
+.stress-table .btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.stress-table .btn-start {
+    background: #4caf50;
+    color: white;
+}
+
+.stress-table .btn-stop {
+    background: #f44336;
+    color: white;
+}
+
+.stress-table .btn-small:hover {
+    opacity: 0.8;
 }
