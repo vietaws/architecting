@@ -1,4 +1,4 @@
-# Check if cloud-init ran successfully
+# Check if cloud-init ran successfully 
 sudo cloud-init status
 
 # View last 50 lines of output log
