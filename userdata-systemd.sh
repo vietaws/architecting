@@ -2,7 +2,7 @@
 set -e
 
 # Variables - UPDATE THESE
-EFS_ID="fs-xxxxxxxxx"  # Your EFS File System ID
+EFS_ID="fs-0df1a5706ceb8608f"  # Your EFS File System ID
 MOUNT_POINT="/data/efs"
 AWS_REGION="us-east-1"
 DYNAMODB_TABLE="demo_table"
@@ -23,7 +23,12 @@ dnf install -y nodejs22 git postgresql17 amazon-efs-utils
 # Setup EFS mount
 echo "Setting up EFS..."
 mkdir -p $MOUNT_POINT
-echo "$EFS_ID:/ $MOUNT_POINT efs _netdev,tls,iam 0 0" >> /etc/fstab
+
+# nslookup $EFS_ID.efs.$AWS_REGION.amazonaws.com
+# mount -t efs -o tls fs-0df1a5706ceb8608f.efs.us-east-1.amazonaws.com:/ $MOUNT_POINT
+# mount -t efs -o tls fs-0df1a5706ceb8608f:/ efs
+
+echo "$EFS_ID.efs.$AWS_REGION.amazonaws.com:/ $MOUNT_POINT efs _netdev,tls,iam 0 0" >> /etc/fstab
 mount -a
 chmod 777 $MOUNT_POINT
 
