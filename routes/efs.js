@@ -77,7 +77,9 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     
     console.log('Moving file from', req.file.path, 'to', destPath);
     
-    await fs.rename(req.file.path, destPath);
+    // Copy file then delete original (works across filesystems)
+    await fs.copyFile(req.file.path, destPath);
+    await fs.unlink(req.file.path);
     
     console.log('File uploaded successfully:', filename);
     
