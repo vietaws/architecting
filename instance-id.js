@@ -1,7 +1,7 @@
 const http = require('http');
 
 async function getInstanceId() {
-  // Get token
+  // Get token from EC2
   const token = await new Promise((resolve, reject) => {
     const req = http.request({
       host: '169.254.169.254',
