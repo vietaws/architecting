@@ -12,6 +12,7 @@ document.querySelectorAll('.tab').forEach(tab => {
         if (target === 'products') loadProducts();
         else if (target === 'providers') loadProviders();
         else if (target === 'stress') loadStressStatus();
+        else if (target === 'efs') loadEFSImages();
     });
 });
 
@@ -160,6 +161,91 @@ async function loadInstanceId() {
 }
 
 loadInstanceId();
+
+// EFS Images
+async function loadEFSImages() {
+    try {
+        const res = await fetch(`${API_URL}/efs`);
+        const images = await res.json();
+        
+        const gallery = document.getElementById('efs-images');
+        
+        if (images.length === 0) {
+            gallery.innerHTML = '<p style="text-align:center;color:#999;">No images uploaded yet</p>';
+            return;
+        }
+        
+        gallery.innerHTML = images.map(img => `
+            <div class="efs-image-card">
+                <img src="${img.url}" alt="${img.name}" loading="lazy">
+                <div class="efs-image-info">
+                    <span class="efs-image-name">${img.name}</span>
+                    <button class="btn-delete-small" onclick="deleteEFSImage('${img.name}')">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading EFS images:', error);
+        document.getElementById('efs-images').innerHTML = 
+            '<p style="text-align:center;color:red;">Error loading images</p>';
+    }
+}
+
+async function deleteEFSImage(filename) {
+    if (!confirm(`Delete ${filename}?`)) return;
+    
+    try {
+        await fetch(`${API_URL}/efs/${filename}`, { method: 'DELETE' });
+        loadEFSImages();
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        alert('Failed to delete image');
+    }
+}
+
+// Handle file upload
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('efs-file-input');
+    const uploadStatus = document.getElementById('upload-status');
+    
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        uploadStatus.textContent = 'Uploading...';
+        
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        try {
+            const res = await fetch(`${API_URL}/efs/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await res.json();
+            
+            if (res.ok) {
+                uploadStatus.textContent = '✓ Uploaded successfully';
+                uploadStatus.style.color = '#4caf50';
+                setTimeout(() => {
+                    uploadStatus.textContent = '';
+                }, 3000);
+                loadEFSImages();
+            } else {
+                uploadStatus.textContent = '✗ Upload failed';
+                uploadStatus.style.color = '#f44336';
+            }
+        } catch (error) {
+            console.error('Error uploading:', error);
+            uploadStatus.textContent = '✗ Upload failed';
+            uploadStatus.style.color = '#f44336';
+        }
+        
+        fileInput.value = '';
+    });
+});
+
 
 // Stress Test
 let stressInterval = null;

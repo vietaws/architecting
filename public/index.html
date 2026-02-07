@@ -15,6 +15,7 @@
                 <button class="tab active" data-tab="products">Products</button>
                 <button class="tab" data-tab="providers">Providers</button>
                 <button class="tab" data-tab="stress">Stress Test</button>
+                <button class="tab" data-tab="efs">EFS Images</button>
             </nav>
         </header>
 
@@ -83,6 +84,22 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </main>
+
+        <main id="efs" class="tab-content">
+            <div class="efs-container">
+                <h2>EFS Image Gallery</h2>
+                <div class="efs-upload">
+                    <input type="file" id="efs-file-input" accept="image/*" style="display:none;">
+                    <button class="btn-primary" onclick="document.getElementById('efs-file-input').click()">
+                        📤 Upload Image
+                    </button>
+                    <span id="upload-status" style="margin-left:15px;color:#666;"></span>
+                </div>
+                <div id="efs-images" class="efs-gallery">
+                    <p style="text-align:center;color:#999;">Loading images...</p>
                 </div>
             </div>
         </main>

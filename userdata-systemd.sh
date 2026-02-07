@@ -1,22 +1,31 @@
 #!/bin/bash
 set -e
 
+# Variables - UPDATE THESE
+EFS_ID="fs-xxxxxxxxx"  # Your EFS File System ID
+MOUNT_POINT="/data/efs"
+AWS_REGION="us-east-1"
+DYNAMODB_TABLE="demo_table"
+S3_BUCKET="demo-product-images-123456"
+RDS_HOST="database-2.cluster-crkedvynyebh.us-east-1.rds.amazonaws.com"
+RDS_PORT="5432"
+RDS_DATABASE="providers_db"
+RDS_USER="dbadmin"
+RDS_PASSWORD="YourPassword"
+PGPASSWORD=$RDS_PASSWORD
+
 # Update system
 dnf update -y
 
-# Install Node.js 22
-dnf install -y nodejs22 git postgresql17
+# Install Node.js 22, Git, PostgreSQL, and EFS utilities
+dnf install -y nodejs22 git postgresql17 amazon-efs-utils
 
-# Set environment variables
-export AWS_REGION="us-east-1"
-export DYNAMODB_TABLE="demo_table"
-export S3_BUCKET="demo-product-images-123456"
-export RDS_HOST="database-2.cluster-crkedvynyebh.us-east-1.rds.amazonaws.com"
-export RDS_PORT="5432"
-export RDS_DATABASE="providers_db"
-export RDS_USER="dbadmin"
-export RDS_PASSWORD="YourPassword"
-export PGPASSWORD=$RDS_PASSWORD
+# Setup EFS mount
+echo "Setting up EFS..."
+mkdir -p $MOUNT_POINT
+echo "$EFS_ID:/ $MOUNT_POINT efs _netdev,tls,iam 0 0" >> /etc/fstab
+mount -a
+chmod 777 $MOUNT_POINT
 
 # Clone application from GitHub
 cd /home/ec2-user

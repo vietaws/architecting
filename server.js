@@ -4,6 +4,7 @@ const config = require('./app_config.json');
 const productRoutes = require('./routes/products');
 const providerRoutes = require('./routes/providers');
 const stressRoutes = require('./routes/stress');
+const efsRoutes = require('./routes/efs');
 const http = require('http');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/products', productRoutes);
 app.use('/providers', providerRoutes);
 app.use('/stress', stressRoutes);
+app.use('/efs', efsRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy' });
