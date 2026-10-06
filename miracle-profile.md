@@ -91,6 +91,40 @@ Miracle is preparing for a **Series A funding round** targeting **$8–12M USD**
 
 ---
 
+## Frequently Asked Questions (FAQ)
+
+**Q: What does Miracle Technologies do?**
+A: Miracle Technologies is a fintech startup that builds cloud-native integration and digital banking infrastructure. It helps banks, credit unions, and digital lenders modernize their core systems and launch new products faster.
+
+**Q: What products does Miracle offer?**
+A: Miracle offers five main offerings: MiracleConnect (API integration platform), MiracleVault (secure data exchange), MiracleFlow (loan origination automation), MiracleInsight (analytics and reporting), and Professional Services (implementation, migration, and advisory).
+
+**Q: Where is Miracle located and which markets does it serve?**
+A: Miracle is headquartered in Ho Chi Minh City, Vietnam, with a regional office in Singapore. It currently serves 14 financial institutions across Vietnam, Singapore, and Thailand, and plans to enter Indonesia in Q3 2026.
+
+**Q: What was Miracle's revenue in FY 2025?**
+A: Miracle's FY 2025 revenue was $4.2M USD, up 75% year over year, driven by the MiracleFlow launch and expansion into the Singapore market.
+
+**Q: What cloud infrastructure does Miracle use?**
+A: Miracle runs 100% on AWS, with its primary region in ap-southeast-1 (Singapore) and disaster recovery in ap-southeast-2 (Sydney).
+
+**Q: Does Miracle have any certifications?**
+A: Yes. Miracle is ISO 27001 certified (2024) and PCI DSS Level 2 compliant. It is targeting SOC 2 Type II certification by the end of 2026.
+
+**Q: How much funding has Miracle raised and what are its plans?**
+A: Miracle raised a $3.5M seed round in 2022 and is preparing a Series A round targeting $8–12M USD in H2 2026. Funds will go toward launching MiracleAI, expanding payment-rail connectors, entering Indonesia, and achieving SOC 2 Type II.
+
+**Q: What is MiracleAI?**
+A: MiracleAI is a planned AI-powered assistant for banking operations teams, built on Amazon Bedrock. It will enable natural language querying of transaction data, automated reconciliation, and intelligent alert triage.
+
+**Q: What are Miracle's strategic objectives for 2026–2027?**
+A: Reach $10M ARR by end of FY 2026, expand to 5 Southeast Asian markets, achieve operating-level profitability by Q4 2027, build a partner ecosystem of 10+ certified implementation partners, and establish MiracleAI as the leading AI-native banking operations assistant in the region.
+
+**Q: How big is the Miracle team?**
+A: Miracle has 62 employees: 38 engineers, 12 in sales/customer success, and 12 in operations/admin.
+
+---
+
 ## Contact
 
 - **Website**: www.miracle.io

@@ -1,0 +1,14 @@
+{
+  "name": "chatbot-rag",
+  "version": "1.0.0",
+  "description": "Miracle RAG chatbot Lambda: Bedrock KB Retrieve + Converse with model switching and metrics",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.670.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.670.0"
+  }
+}

@@ -11,13 +11,38 @@
     <header class="chat-header">
       <span class="header-dot"></span>
       <span>Miracle AI Assistant</span>
+      <label class="model-select">
+        <span class="model-label">Model</span>
+        <select id="model">
+          <option value="apac.amazon.nova-lite-v1:0" selected>Amazon Nova Lite</option>
+          <option value="apac.anthropic.claude-3-haiku-20240307-v1:0">Claude 3 Haiku</option>
+          <option value="apac.anthropic.claude-3-5-sonnet-20240620-v1:0">Claude 3.5 Sonnet</option>
+        </select>
+      </label>
     </header>
 
     <div class="messages" id="messages">
       <div class="message assistant">
-        <div class="bubble">Hi! Ask me anything about Miracle Technologies.</div>
+        <div class="bubble">Hi! Ask me anything about Miracle Technologies. Pick a model above to compare cost, speed, and quality.</div>
       </div>
     </div>
+
+    <!-- Per-query learning metrics -->
+    <section class="metrics" id="metrics" aria-live="polite" hidden>
+      <div class="metrics-title">Last query metrics</div>
+      <div class="metrics-grid">
+        <div class="metric"><span class="m-label">Model</span><span class="m-value" id="m-model">—</span></div>
+        <div class="metric"><span class="m-label">Region</span><span class="m-value" id="m-region">—</span></div>
+        <div class="metric"><span class="m-label">Input tokens</span><span class="m-value" id="m-in">—</span></div>
+        <div class="metric"><span class="m-label">Output tokens</span><span class="m-value" id="m-out">—</span></div>
+        <div class="metric"><span class="m-label">Total tokens</span><span class="m-value" id="m-total">—</span></div>
+        <div class="metric"><span class="m-label">Est. cost (USD)</span><span class="m-value" id="m-cost">—</span></div>
+        <div class="metric"><span class="m-label">Latency (ms)</span><span class="m-value" id="m-latency">—</span></div>
+        <div class="metric"><span class="m-label">Tokens/sec</span><span class="m-value" id="m-tps">—</span></div>
+        <div class="metric"><span class="m-label">Chunks</span><span class="m-value" id="m-chunks">—</span></div>
+        <div class="metric wide"><span class="m-label">Top scores</span><span class="m-value" id="m-scores">—</span></div>
+      </div>
+    </section>
 
     <form class="input-bar" id="form">
       <input
