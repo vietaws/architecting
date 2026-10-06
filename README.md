@@ -24,6 +24,8 @@ latency, tokens/sec, retrieval scores) so learners can compare models side by si
 
 ## Architecture
 
+![Architecture](images/lab16.png)
+
 ```mermaid
 flowchart TD
     U[Browser] -->|GET static site over HTTP| S3W[S3 Static Website Hosting]
