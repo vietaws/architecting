@@ -5,8 +5,8 @@ A demo Retrieval-Augmented Generation (RAG) chatbot that answers questions about
 Amazon Bedrock Knowledge Bases, Amazon S3 Vectors, AWS Lambda, Amazon API Gateway
 (HTTP API), and an Amazon S3 static website for the frontend.
 
-The chatbot lets a user **switch models** (Amazon Nova Lite, Claude Haiku, Claude
-Sonnet) and shows **per-query learning metrics** (token-in / token-out, cost,
+The chatbot lets a user **switch models** (Amazon Nova Lite, Claude Haiku 4.5, Claude
+Sonnet 4.5) and shows **per-query learning metrics** (token-in / token-out, cost,
 latency, tokens/sec, retrieval scores) so learners can compare models side by side.
 
 - **Region:** `ap-southeast-1` (Singapore)
@@ -34,7 +34,7 @@ flowchart TD
     L -->|1. Retrieve chunks + similarity scores| KBR[Bedrock KB Retrieve API]
     KBR --> SV[(S3 Vectors index)]
     L -->|2. Converse with selected model| BR[Bedrock Runtime: Converse]
-    BR --> M{Nova Lite / Claude Haiku / Claude Sonnet}
+    BR --> M{Nova Lite / Claude Haiku 4.5 / Claude Sonnet 4.5}
     L -->|answer + citations + usage + latency + cost| HG
 
     subgraph setup [Manual Console Setup - one time]
@@ -87,7 +87,7 @@ flowchart TD
 
 In `ap-southeast-1`, Nova and newer Claude models are typically invoked through
 **cross-region inference profiles** (e.g. `apac.amazon.nova-lite-v1:0`,
-`apac.anthropic.claude-3-haiku-...`, `apac.anthropic.claude-...-sonnet-...`) rather
+`global.anthropic.claude-haiku-4-5-...`, `global.anthropic.claude-sonnet-4-5-...`) rather
 than plain `foundation-model` ARNs. Confirm the exact inference profile IDs in the
 Bedrock console (**Model catalog** / **Cross-region inference**) at build time and use
 those in the Lambda allowlist and IAM policy.
@@ -186,7 +186,7 @@ Build order. Each task is independently demoable.
 
 ### Task 6 — Frontend: model selector + metrics panel (HTTP fetch)
 - Refactor `app.js` from WebSocket to `fetch(API_URL + '/chat', ...)`.
-- Add dropdown (Nova Lite, Claude Haiku, Claude Sonnet) + metrics panel: input/output/
+- Add dropdown (Nova Lite, Claude Haiku 4.5, Claude Sonnet 4.5) + metrics panel: input/output/
   total tokens, estimated cost, latency, tokens/sec, retrieved chunk count + top
   similarity scores, model name + region. Update `index.html` / `style.css`.
 - **Done when:** each model returns an answer; switching models updates the metrics.
@@ -217,10 +217,10 @@ Run after the stack is deployed (Tasks 2–7 complete).
    - Watch the **metrics panel**: input tokens, output tokens, total tokens, estimated
      cost, latency, tokens/sec, retrieved chunk count + top similarity scores.
 
-3. **Switch the model** to **Claude Haiku**, ask the same question again.
-   - Compare the metrics: Haiku vs Nova Lite token counts, latency, and cost.
+3. **Switch the model** to **Claude Haiku 4.5**, ask the same question again.
+   - Compare the metrics: Haiku 4.5 vs Nova Lite token counts, latency, and cost.
 
-4. **Switch to Claude Sonnet**, ask a reasoning-heavier question:
+4. **Switch to Claude Sonnet 4.5**, ask a reasoning-heavier question:
    > "What is Miracle planning to do with its Series A funding, and how does that tie
    > to its 2026–2027 strategic objectives?"
    - Observe a richer answer, higher output tokens, higher cost, and the retrieval

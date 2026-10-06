@@ -45,7 +45,7 @@ Repository layout used by this runbook:
 - Embeddings (KB): `cohere.embed-english-v3` — Titan embeddings are **not available** in
   ap-southeast-1; Cohere Embed English v3 is the best-practice choice there (1024-dim,
   on-demand, same vector shape).
-- Chat (per request): Amazon Nova Lite, Claude Haiku, Claude Sonnet.
+- Chat (per request): Amazon Nova Lite, Claude Haiku 4.5, Claude Sonnet 4.5.
 
 > **Model enablement (Sep 2025+).** Bedrock removed the old **Model access** page.
 > Serverless models are **auto-enabled** per Region; access is granted via **IAM**, plus
@@ -72,8 +72,8 @@ miracle-profile.md ─upload─▶ S3 Data Bucket ─data source─▶ Bedrock K
    enabled automatically — no action needed):
    - **Cohere → Embed English v3** (KB embeddings — `cohere.embed-english-v3`)
    - **Amazon → Nova Lite** (chat)
-   - **Anthropic → Claude Haiku** (chat — e.g. Claude 3 Haiku or Claude 3.5 Haiku)
-   - **Anthropic → Claude Sonnet** (chat — e.g. Claude 3.5 Sonnet)
+   - **Anthropic → Claude Haiku 4.5** (chat)
+   - **Anthropic → Claude Sonnet 4.5** (chat)
 3. Optionally open a model in the **Playground** to smoke-test it.
 
 > **IAM grants access now.** The identity that invokes a model (the KB service role for
@@ -113,8 +113,11 @@ miracle-profile.md ─upload─▶ S3 Data Bucket ─data source─▶ Bedrock K
 > plain foundation-model IDs. Note each profile ID from the model's detail page (or the
 > **Cross-region inference** tab):
 > - `apac.amazon.nova-lite-v1:0`
-> - `apac.anthropic.claude-3-haiku-20240307-v1:0` (or the Claude 3.5 Haiku profile)
-> - `apac.anthropic.claude-3-5-sonnet-20240620-v1:0` (or the current Sonnet profile)
+> - `global.anthropic.claude-haiku-4-5-20251001-v1:0` (Claude Haiku 4.5)
+> - `global.anthropic.claude-sonnet-4-5-20250929-v1:0` (Claude Sonnet 4.5)
+>
+> Note Claude 4.5 models use **global** inference profiles (`global.` prefix), while Nova
+> Lite uses an **APAC** profile (`apac.` prefix).
 >
 > If your IDs differ from the defaults, update the `MODELS` allowlist in
 > `chatbot/lambda/rag/index.mjs` and the `<option>` values in

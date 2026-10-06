@@ -46,13 +46,13 @@ const MODELS = {
     pricePer1kInput: 0.00006,
     pricePer1kOutput: 0.00024,
   },
-  'apac.anthropic.claude-3-haiku-20240307-v1:0': {
-    label: 'Claude 3 Haiku',
-    pricePer1kInput: 0.00025,
-    pricePer1kOutput: 0.00125,
+  'global.anthropic.claude-haiku-4-5-20251001-v1:0': {
+    label: 'Claude Haiku 4.5',
+    pricePer1kInput: 0.001,
+    pricePer1kOutput: 0.005,
   },
-  'apac.anthropic.claude-3-5-sonnet-20240620-v1:0': {
-    label: 'Claude 3.5 Sonnet',
+  'global.anthropic.claude-sonnet-4-5-20250929-v1:0': {
+    label: 'Claude Sonnet 4.5',
     pricePer1kInput: 0.003,
     pricePer1kOutput: 0.015,
   },
