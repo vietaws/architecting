@@ -34,8 +34,8 @@ hello@viet.vn
 | `lab12-iac` | Infrastructure as Code | CloudFormation, CDK (TypeScript) |
 | `lab14-cicd` | CI/CD Pipeline | CodePipeline, CodeBuild, CodeDeploy, EFS |
 | `lab15-cloudfront` | CloudFront Distribution | CloudFront, S3 (OAC), EC2, Origin Groups |
-| `lab16-rag` | Build AI Assistant with Amazon Bedrock | Amazon Bedrock, Knowlege Base, Lambda, API Gateway, S3 Vector |
-| `lab17-DR` | Disaster Recovery on AWS | Backup & Restore, Pilot Light, Warm-standby, Multi Site Active Active |
+| `lab16-rag` | RAG AI Chatbot with Amazon Bedrock | Bedrock Knowledge Base, S3 Vectors, Lambda, API Gateway (HTTP API), S3 |
+| `lab17-dr` | Architecting for Resilience (DR) | Backup & Restore, Pilot Light, Warm Standby, Multi-Site Active/Active |
 | `lab18-capstone` | CRM Application (Capstone) | EC2, RDS, DynamoDB, S3, EFS |
 
 ---
@@ -144,6 +144,25 @@ CloudFront setup with multiple origins and failover.
 - **Part 1**: Private S3 origin via OAC (no public bucket)
 - **Part 2**: EC2 as second origin for `/images/*` path
 - **Part 3**: Origin Group with EC2 (active) + S3 (passive failover)
+
+### lab16 — RAG AI Chatbot with Amazon Bedrock
+Retrieval-Augmented Generation chatbot answering questions about a demo company profile.
+- Amazon Bedrock Knowledge Base (Cohere Embed English v3) with **S3 Vectors** store
+- Manual RAG flow: `Retrieve` (KB) + `Converse` (Bedrock Runtime) in a single Lambda
+- **Model switching** across Amazon Nova Lite, Claude Haiku 4.5, Claude Sonnet 4.5
+- Per-query metrics: token in/out, estimated cost, latency, tokens/sec, retrieval scores
+- API Gateway HTTP API (`POST /chat`, CORS) → Lambda; static frontend on S3 website hosting
+- Region `ap-southeast-1`; KB + S3 Vectors created in console, rest deployed via AWS CLI
+
+### lab17 — Architecting for Resilience (DR)
+Reference materials for Business Continuity Planning (BCP) and Disaster Recovery on AWS.
+- Core principles: assume failure, graceful degradation, decomposition
+- BCP four-phase lifecycle: Understand → Prepare → Respond → Sustain (RTO/RPO metrics)
+- Four DR strategies by cost and recovery speed:
+  - **Backup & Restore** (RTO hours, $)
+  - **Pilot Light** (RTO 30–60 min, $$)
+  - **Warm Standby** (RTO minutes, $$$)
+  - **Multi-Site Active/Active** (RTO near-zero, $$$$)
 
 ### lab18 — CRM Capstone
 Full CRM application combining multiple AWS storage services.
