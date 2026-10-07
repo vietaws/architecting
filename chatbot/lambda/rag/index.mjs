@@ -150,7 +150,8 @@ export const handler = async (event) => {
         modelId,
         system: [{ text: systemPrompt }],
         messages: [{ role: 'user', content: [{ text: userContent }] }],
-        inferenceConfig: { maxTokens: 512, temperature: 0.2, topP: 0.9 },
+        // Set only ONE of temperature / topP: Claude 4.5 models reject both together.
+        inferenceConfig: { maxTokens: 512, temperature: 0.2 },
       })
     );
     const genMs = Date.now() - genStart;
