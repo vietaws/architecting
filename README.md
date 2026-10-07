@@ -34,8 +34,8 @@ hello@viet.vn
 | `lab12-iac` | Infrastructure as Code | CloudFormation, CDK (TypeScript) |
 | `lab14-cicd` | CI/CD Pipeline | CodePipeline, CodeBuild, CodeDeploy, EFS |
 | `lab15-cloudfront` | CloudFront Distribution | CloudFront, S3 (OAC), EC2, Origin Groups |
-| `lab16-tbu` | To be updated | To be updated |
-| `lab17-tbu` | To be updated | To be updated |
+| `lab16-rag` | Build AI Assistant with Amazon Bedrock | Amazon Bedrock, Knowlege Base, Lambda, API Gateway, S3 Vector |
+| `lab17-DR` | Disaster Recovery on AWS | Backup & Restore, Pilot Light, Warm-standby, Multi Site Active Active |
 | `lab18-capstone` | CRM Application (Capstone) | EC2, RDS, DynamoDB, S3, EFS |
 
 ---
